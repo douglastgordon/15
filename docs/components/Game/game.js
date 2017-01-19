@@ -1,5 +1,6 @@
 import React from 'react';
 import Tile from '../Tile/tile';
+import EmptyTile from '../Tile/empty_tile';
 
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i -= 1) {
@@ -33,6 +34,7 @@ export default class Game extends React.Component {
       array.push(i);
     }
     array = shuffleArray(array);
+    array.push(0);
     return array;
   }
 
@@ -40,7 +42,11 @@ export default class Game extends React.Component {
     const gameArray = this.state.tiles;
     const tiles = [];
     gameArray.forEach((num) => {
-      tiles.push(<Tile number={num} />);
+      if (num === 0) {
+        tiles.push(<EmptyTile />);
+      } else {
+        tiles.push(<Tile number={num} />);
+      }
     });
     return tiles;
   }
@@ -48,9 +54,8 @@ export default class Game extends React.Component {
   render() {
     const tiles = this.makeTiles();
     return (
-      <div>
-      <h1>hi</h1>
-      <div>{tiles}</div>
+      <div className="board">
+        {tiles}
       </div>
     );
   }

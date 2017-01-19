@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Tile extends React.Component {
+export default class EmptyTile extends React.Component {
 
   constructor(props) {
     super(props);
@@ -8,7 +8,8 @@ export default class Tile extends React.Component {
 
   render() {
     return (
-      <div className="tile">{this.props.number}</div>
+      <div className="tile"></div>
     );
   }
+
 }
