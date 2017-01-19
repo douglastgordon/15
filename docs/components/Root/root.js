@@ -1,6 +1,7 @@
 import React from 'react';
 
-class Root extends React.Component {
+export default class Root extends React.Component {
+  debugger
   render() {
     return (
       <h1>Hello</h1>
