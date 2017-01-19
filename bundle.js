@@ -21564,6 +21564,10 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _tile = __webpack_require__(180);
+	
+	var _tile2 = _interopRequireDefault(_tile);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21571,6 +21575,16 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var shuffleArray = function shuffleArray(array) {
+	  for (var i = array.length - 1; i > 0; i -= 1) {
+	    var j = Math.floor(Math.random() * (i + 1));
+	    var temp = array[i];
+	    array[i] = array[j];
+	    array[j] = temp;
+	  }
+	  return array;
+	};
 	
 	var Game = function (_React$Component) {
 	  _inherits(Game, _React$Component);
@@ -21580,19 +21594,57 @@
 	
 	    var _this = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this));
 	
+	    var GAME_SIZE = 15;
 	    _this.state = {
-	      won: false
+	      won: false,
+	      tiles: []
 	    };
 	    return _this;
 	  }
 	
 	  _createClass(Game, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var tiles = this.makeGameArray();
+	      this.setState({ tiles: tiles });
+	    }
+	  }, {
+	    key: 'makeGameArray',
+	    value: function makeGameArray() {
+	      var array = [];
+	      for (var i = 1; i <= 15; i += 1) {
+	        array.push(i);
+	      }
+	      array = shuffleArray(array);
+	      return array;
+	    }
+	  }, {
+	    key: 'makeTiles',
+	    value: function makeTiles() {
+	      var gameArray = this.state.tiles;
+	      var tiles = [];
+	      gameArray.forEach(function (num) {
+	        tiles.push(_react2.default.createElement(_tile2.default, { number: num }));
+	      });
+	      return tiles;
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var tiles = this.makeTiles();
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        'This is the game component'
+	        _react2.default.createElement(
+	          'h1',
+	          null,
+	          'hi'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          tiles
+	        )
 	      );
 	    }
 	  }]);
@@ -21601,6 +21653,55 @@
 	}(_react2.default.Component);
 	
 	exports.default = Game;
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Tile = function (_React$Component) {
+	  _inherits(Tile, _React$Component);
+	
+	  function Tile(props) {
+	    _classCallCheck(this, Tile);
+	
+	    return _possibleConstructorReturn(this, (Tile.__proto__ || Object.getPrototypeOf(Tile)).call(this, props));
+	  }
+	
+	  _createClass(Tile, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        this.props.number
+	      );
+	    }
+	  }]);
+	
+	  return Tile;
+	}(_react2.default.Component);
+	
+	exports.default = Tile;
 
 /***/ }
 /******/ ]);
