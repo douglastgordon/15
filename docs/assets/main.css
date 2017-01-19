@@ -1,5 +1,5 @@
 .board {
-  width: 400px;
+  width: 408px;
   height: 400px;
   display: flex;
   flex-wrap: wrap;
@@ -11,5 +11,7 @@
   font-size: 20px;
   line-height: 100px;
   font-family: Helvetica;
-
+  background: grey;
+  text-align: center;
+  border: solid red 1px;
 }
