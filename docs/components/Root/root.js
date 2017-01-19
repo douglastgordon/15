@@ -1,10 +1,12 @@
 import React from 'react';
+import Game from '../Game/game';
 
 export default class Root extends React.Component {
-  debugger
+
   render() {
     return (
-      <h1>Hello</h1>
+      <Game />
     );
   }
+
 }
