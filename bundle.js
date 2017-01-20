@@ -21590,6 +21590,8 @@
 	  return array;
 	};
 	
+	var emptyTileIndex = void 0;
+	
 	var Game = function (_React$Component) {
 	  _inherits(Game, _React$Component);
 	
@@ -21599,14 +21601,17 @@
 	    var _this = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this));
 	
 	    var GAME_SIZE = 15;
+	
 	    _this.moveTileUp = _this.moveTileUp.bind(_this);
 	    _this.moveTileDown = _this.moveTileDown.bind(_this);
 	    _this.moveTileRight = _this.moveTileRight.bind(_this);
 	    _this.moveTileLeft = _this.moveTileLeft.bind(_this);
 	    _this.handleKeyPress = _this.handleKeyPress.bind(_this);
+	    _this.shuffleBoard = _this.shuffleBoard.bind(_this);
 	    _this.state = {
 	      won: false,
-	      tiles: []
+	      tiles: [],
+	      busy: false
 	    };
 	    return _this;
 	  }
@@ -21625,21 +21630,27 @@
 	      for (var i = 1; i <= 15; i += 1) {
 	        array.push(i);
 	      }
+	      array.push(0);
 	      array = shuffleArray(array);
 	      while (!this.isSolvable(array)) {
 	        array = shuffleArray(array);
 	      }
-	      array.push(0);
 	      return array;
 	    }
 	
-	    // Where blank tile starts on odd row from bottom (always the case)
-	    // A game is solvable if the number of inversions is even
+	    // Where blank tile starts on odd row from bottom
+	    // A game is solvable if the number of inversions is even (& visa versa)
 	    // see: http://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
 	
 	  }, {
 	    key: 'isSolvable',
 	    value: function isSolvable(array) {
+	      var emptyIdx = array.indexOf(0);
+	      var blankIsOddRowFromBottom = false;
+	      if ([4, 5, 6, 7, 12, 13, 14, 15].includes(emptyIdx)) {
+	        blankIsOddRowFromBottom = true;
+	      }
+	
 	      var inversions = 0;
 	      for (var i = 0; i < array.length - 1; i += 1) {
 	        for (var j = i; j < array.length; j += 1) {
@@ -21648,7 +21659,11 @@
 	          }
 	        }
 	      }
-	      return inversions % 2 === 0;
+	      if (blankIsOddRowFromBottom && inversions % 2 === 0 || !blankIsOddRowFromBottom && inversions % 2 !== 0) {
+	        return true;
+	      } else {
+	        return false;
+	      }
 	    }
 	  }, {
 	    key: 'makeTiles',
@@ -21687,6 +21702,7 @@
 	  }, {
 	    key: 'moveTileUp',
 	    value: function moveTileUp() {
+	      console.log("up");
 	      var emptyTileIndex = this.findEmptyTile();
 	      var tiles = this.state.tiles;
 	      if (emptyTileIndex > 3) {
@@ -21698,6 +21714,7 @@
 	  }, {
 	    key: 'moveTileDown',
 	    value: function moveTileDown() {
+	      console.log("down");
 	      var emptyTileIndex = this.findEmptyTile();
 	      var tiles = this.state.tiles;
 	      if (emptyTileIndex <= 11) {
@@ -21709,6 +21726,7 @@
 	  }, {
 	    key: 'moveTileLeft',
 	    value: function moveTileLeft() {
+	      console.log("left");
 	      var emptyTileIndex = this.findEmptyTile();
 	      var tiles = this.state.tiles;
 	      if (emptyTileIndex % 4 !== 0) {
@@ -21720,6 +21738,7 @@
 	  }, {
 	    key: 'moveTileRight',
 	    value: function moveTileRight() {
+	      console.log("right");
 	      var emptyTileIndex = this.findEmptyTile();
 	      var tiles = this.state.tiles;
 	      if (![3, 7, 11, 15].includes(emptyTileIndex)) {
@@ -21746,15 +21765,103 @@
 	    }
 	  }, {
 	    key: 'shuffleBoard',
-	    value: function shuffleBoard() {}
+	    value: function shuffleBoard() {
+	
+	      if (this.state.busy) {
+	        return;
+	      } else {
+	        this.setState({ busy: true });
+	      }
+	
+	      var delay = 500;
+	      delay = this.make20Moves(delay);
+	      // while (!this.isSolvable(this.state.tiles)) {
+	      //   delay = this.make20Moves(delay);
+	      // }
+	
+	      this.setState({ busy: false });
+	    }
+	  }, {
+	    key: 'make20Moves',
+	    value: function make20Moves(delay) {
+	      var tiles = this.state.tiles;
+	      emptyTileIndex = tiles.indexOf(0);
+	
+	      for (var i = 0; i < 40; i += 1) {
+	        this.makeMove(delay);
+	        delay += 200;
+	      }
+	      return delay;
+	    }
+	  }, {
+	    key: 'makeMove',
+	    value: function makeMove(delay) {
+	      var _this2 = this;
+	
+	      var rand = Math.floor(Math.random() * 4);
+	      rand = this.fixRand(rand);
+	
+	      switch (rand) {
+	        case 0:
+	          setTimeout(function () {
+	            _this2.moveTileUp(emptyTileIndex);
+	          }, delay);
+	          emptyTileIndex -= 4;
+	          break;
+	        case 1:
+	          setTimeout(function () {
+	            _this2.moveTileDown(emptyTileIndex);
+	          }, delay);
+	          emptyTileIndex += 4;
+	          break;
+	        case 2:
+	          setTimeout(function () {
+	            _this2.moveTileLeft(emptyTileIndex);
+	          }, delay);
+	          emptyTileIndex -= 1;
+	          break;
+	        case 3:
+	          setTimeout(function () {
+	            _this2.moveTileRight(emptyTileIndex);
+	          }, delay);
+	          emptyTileIndex += 1;
+	          break;
+	        default:
+	          return;
+	      }
+	    }
+	  }, {
+	    key: 'fixRand',
+	    value: function fixRand(rand) {
+	      if (rand === 0 && emptyTileIndex <= 3) {
+	        rand += 1;
+	      } else if (rand === 1 && emptyTileIndex > 11) {
+	        rand -= 1;
+	      }
+	      if (rand === 2 && emptyTileIndex % 4 === 0) {
+	        rand += 1;
+	      } else if (rand === 3 && [3, 7, 11, 15].includes(emptyTileIndex)) {
+	        rand -= 1;
+	      }
+	      return rand;
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var tiles = this.makeTiles();
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'board', onKeyDown: this.handleKeyPress },
-	        tiles
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'board', onKeyDown: this.handleKeyPress },
+	          tiles
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { onClick: this.shuffleBoard },
+	          'shuffleBoard'
+	        )
 	      );
 	    }
 	  }]);

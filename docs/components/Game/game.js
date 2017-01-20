@@ -12,19 +12,24 @@ const shuffleArray = (array) => {
   return array;
 };
 
+let emptyTileIndex;
+
 export default class Game extends React.Component {
 
   constructor() {
     super();
     const GAME_SIZE = 15;
+
     this.moveTileUp = this.moveTileUp.bind(this);
     this.moveTileDown = this.moveTileDown.bind(this);
     this.moveTileRight = this.moveTileRight.bind(this);
     this.moveTileLeft = this.moveTileLeft.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.shuffleBoard = this.shuffleBoard.bind(this);
     this.state = {
       won: false,
       tiles: [],
+      busy: false,
     };
   }
 
@@ -39,18 +44,24 @@ export default class Game extends React.Component {
     for (let i = 1; i <= 15; i += 1) {
       array.push(i);
     }
+    array.push(0);
     array = shuffleArray(array);
     while (!this.isSolvable(array)) {
       array = shuffleArray(array);
     }
-    array.push(0);
     return array;
   }
 
-  // Where blank tile starts on odd row from bottom (always the case)
-  // A game is solvable if the number of inversions is even
+  // Where blank tile starts on odd row from bottom
+  // A game is solvable if the number of inversions is even (& visa versa)
   // see: http://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
   isSolvable(array) {
+    const emptyIdx = array.indexOf(0);
+    let blankIsOddRowFromBottom = false;
+    if ([4, 5, 6, 7, 12, 13, 14, 15].includes(emptyIdx) ) {
+      blankIsOddRowFromBottom = true;
+    }
+
     let inversions = 0;
     for (let i = 0; i < array.length - 1; i += 1) {
       for (let j = i; j < array.length; j += 1 ) {
@@ -59,7 +70,12 @@ export default class Game extends React.Component {
         }
       }
     }
-  return (inversions % 2 === 0);
+    if ((blankIsOddRowFromBottom && (inversions % 2 === 0)) ||
+         !blankIsOddRowFromBottom && (inversions % 2 !== 0)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   makeTiles() {
@@ -95,6 +111,7 @@ export default class Game extends React.Component {
   }
 
   moveTileUp() {
+    console.log("up");
     const emptyTileIndex = this.findEmptyTile();
     const tiles = this.state.tiles;
     if (emptyTileIndex > 3) {
@@ -105,6 +122,7 @@ export default class Game extends React.Component {
   }
 
   moveTileDown() {
+    console.log("down");
     const emptyTileIndex = this.findEmptyTile();
     const tiles = this.state.tiles;
     if (emptyTileIndex <= 11) {
@@ -115,6 +133,7 @@ export default class Game extends React.Component {
   }
 
   moveTileLeft() {
+    console.log("left");
     const emptyTileIndex = this.findEmptyTile();
     const tiles = this.state.tiles;
     if (emptyTileIndex % 4 !== 0) {
@@ -125,6 +144,7 @@ export default class Game extends React.Component {
   }
 
   moveTileRight() {
+    console.log("right");
     const emptyTileIndex = this.findEmptyTile();
     const tiles = this.state.tiles;
     if (![3, 7, 11, 15].includes(emptyTileIndex)) {
@@ -151,14 +171,83 @@ export default class Game extends React.Component {
   }
 
   shuffleBoard() {
-    
+
+    if (this.state.busy) {
+      return;
+    } else {
+      this.setState({ busy: true });
+    }
+
+    let delay = 500;
+    delay = this.make20Moves(delay);
+    // while (!this.isSolvable(this.state.tiles)) {
+    //   delay = this.make20Moves(delay);
+    // }
+
+    this.setState({ busy: false });
+  }
+
+  make20Moves(delay) {
+    const tiles = this.state.tiles;
+    emptyTileIndex = tiles.indexOf(0);
+
+    for (let i = 0; i < 40; i += 1) {
+      this.makeMove(delay);
+      delay += 200;
+    }
+    return delay;
+  }
+
+  makeMove(delay) {
+
+    let rand = Math.floor((Math.random() * 4));
+    rand = this.fixRand(rand);
+
+
+    switch (rand) {
+      case 0:
+        setTimeout(() => { this.moveTileUp(emptyTileIndex); }, delay);
+        emptyTileIndex -= 4;
+        break;
+      case 1:
+      setTimeout(() => { this.moveTileDown(emptyTileIndex); }, delay);
+        emptyTileIndex += 4;
+        break;
+      case 2:
+        setTimeout(() => { this.moveTileLeft(emptyTileIndex); }, delay);
+        emptyTileIndex -= 1;
+        break;
+      case 3:
+        setTimeout(() => { this.moveTileRight(emptyTileIndex); }, delay);
+        emptyTileIndex += 1;
+        break;
+      default:
+        return;
+    }
+  }
+
+  fixRand(rand) {
+    if (rand === 0 && emptyTileIndex <= 3) {
+      rand += 1;
+    } else if (rand === 1 && emptyTileIndex > 11 ) {
+      rand -= 1;
+    }
+    if (rand === 2 && emptyTileIndex % 4 === 0) {
+      rand += 1;
+    } else if (rand === 3 && [3, 7, 11, 15].includes(emptyTileIndex)) {
+      rand -= 1;
+    }
+    return rand;
   }
 
   render() {
     const tiles = this.makeTiles();
     return (
-      <div className="board" onKeyDown={this.handleKeyPress}>
-        {tiles}
+      <div>
+        <div className="board" onKeyDown={this.handleKeyPress}>
+          {tiles}
+        </div>
+        <div onClick={this.shuffleBoard}>shuffleBoard</div>
       </div>
     );
   }
