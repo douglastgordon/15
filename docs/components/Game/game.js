@@ -26,29 +26,33 @@ export default class Game extends React.Component {
     this.moveTileLeft = this.moveTileLeft.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.shuffleBoard = this.shuffleBoard.bind(this);
+    this.solve = this.solve.bind(this);
     this.state = {
       won: false,
       tiles: [],
       busy: false,
+      movesFromSolved: [],
     };
   }
 
   componentWillMount() {
     window.addEventListener("keydown", this.handleKeyPress);
     const tiles = this.makeGameArray();
-    this.setState({ tiles });
+    this.setState({ tiles }, () => {
+      this.shuffleBoard();
+    });
   }
 
   makeGameArray() {
     let array = [];
-    for (let i = 1; i <= 15; i += 1) {
+    for (let i =0; i <= 15; i += 1) {
       array.push(i);
     }
-    array.push(0);
-    array = shuffleArray(array);
-    while (!this.isSolvable(array)) {
-      array = shuffleArray(array);
-    }
+    // array.push(0);
+    // array = shuffleArray(array);
+    // while (!this.isSolvable(array)) {
+    //   array = shuffleArray(array);
+    // }
     return array;
   }
 
@@ -95,15 +99,19 @@ export default class Game extends React.Component {
     switch (event.key) {
       case 'ArrowUp':
         this.moveTileUp();
+        emptyTileIndex -= 4;
         break;
       case 'ArrowDown':
         this.moveTileDown();
+        emptyTileIndex += 4;
         break;
       case 'ArrowRight':
         this.moveTileRight();
+        emptyTileIndex += 1;
         break;
       case 'ArrowLeft':
         this.moveTileLeft();
+        emptyTileIndex -= 1;
         break;
       default:
         return;
@@ -112,45 +120,58 @@ export default class Game extends React.Component {
 
   moveTileUp() {
     console.log("up");
-    const emptyTileIndex = this.findEmptyTile();
+    const emptyTileIdx = this.findEmptyTile();
     const tiles = this.state.tiles;
-    if (emptyTileIndex > 3) {
-      tiles[emptyTileIndex] = tiles[emptyTileIndex - 4];
-      tiles[emptyTileIndex - 4] = 0;
-      this.setState({ tiles });
+    const movesFromSolved = this.state.movesFromSolved;
+
+    if (emptyTileIdx > 3) {
+      tiles[emptyTileIdx] = tiles[emptyTileIdx - 4];
+      tiles[emptyTileIdx - 4] = 0;
+      movesFromSolved.push("up");
+      this.setState({ tiles, movesFromSolved });
     }
   }
 
   moveTileDown() {
     console.log("down");
-    const emptyTileIndex = this.findEmptyTile();
+    const emptyTileIdx = this.findEmptyTile();
     const tiles = this.state.tiles;
-    if (emptyTileIndex <= 11) {
-      tiles[emptyTileIndex] = tiles[emptyTileIndex + 4];
-      tiles[emptyTileIndex + 4] = 0;
-      this.setState({ tiles });
+    const movesFromSolved = this.state.movesFromSolved;
+
+    if (emptyTileIdx <= 11) {
+      tiles[emptyTileIdx] = tiles[emptyTileIdx + 4];
+      tiles[emptyTileIdx + 4] = 0;
+      movesFromSolved.push("down");
+      this.setState({ tiles, movesFromSolved });
     }
   }
 
   moveTileLeft() {
     console.log("left");
-    const emptyTileIndex = this.findEmptyTile();
+    const emptyTileIdx = this.findEmptyTile();
     const tiles = this.state.tiles;
-    if (emptyTileIndex % 4 !== 0) {
-      tiles[emptyTileIndex] = tiles[emptyTileIndex - 1];
-      tiles[emptyTileIndex - 1] = 0;
-      this.setState({ tiles });
+    const movesFromSolved = this.state.movesFromSolved;
+
+    if (emptyTileIdx % 4 !== 0) {
+      tiles[emptyTileIdx] = tiles[emptyTileIdx - 1];
+      tiles[emptyTileIdx - 1] = 0;
+      movesFromSolved.push("left");
+      this.setState({ tiles, movesFromSolved });
     }
   }
 
   moveTileRight() {
     console.log("right");
-    const emptyTileIndex = this.findEmptyTile();
+    const emptyTileIdx = this.findEmptyTile();
     const tiles = this.state.tiles;
-    if (![3, 7, 11, 15].includes(emptyTileIndex)) {
-      tiles[emptyTileIndex] = tiles[emptyTileIndex + 1];
-      tiles[emptyTileIndex + 1] = 0;
-      this.setState({ tiles });
+    const movesFromSolved = this.state.movesFromSolved;
+
+    if (![3, 7, 11, 15].includes(emptyTileIdx)) {
+      tiles[emptyTileIdx] = tiles[emptyTileIdx + 1];
+      tiles[emptyTileIdx + 1] = 0;
+      movesFromSolved.push("right");
+
+      this.setState({ tiles, movesFromSolved });
     }
   }
 
@@ -171,7 +192,6 @@ export default class Game extends React.Component {
   }
 
   shuffleBoard() {
-
     if (this.state.busy) {
       return;
     } else {
@@ -179,21 +199,20 @@ export default class Game extends React.Component {
     }
 
     let delay = 500;
-    delay = this.make20Moves(delay);
+    delay = this.make40Moves(delay);
     // while (!this.isSolvable(this.state.tiles)) {
-    //   delay = this.make20Moves(delay);
+    //   delay = this.make40Moves(delay);
     // }
-
     this.setState({ busy: false });
   }
 
-  make20Moves(delay) {
+  make40Moves(delay) {
     const tiles = this.state.tiles;
     emptyTileIndex = tiles.indexOf(0);
 
     for (let i = 0; i < 40; i += 1) {
       this.makeMove(delay);
-      delay += 200;
+      delay += 100;
     }
     return delay;
   }
@@ -202,7 +221,6 @@ export default class Game extends React.Component {
 
     let rand = Math.floor((Math.random() * 4));
     rand = this.fixRand(rand);
-
 
     switch (rand) {
       case 0:
@@ -240,6 +258,39 @@ export default class Game extends React.Component {
     return rand;
   }
 
+  solve() {
+    const reversedMovesFromSolved = this.state.movesFromSolved.reverse();
+    const movesToMake = this.invertMoves(reversedMovesFromSolved);
+    makeMoves(movesToMake);
+  }
+
+  invert(moves) {
+    const newMoves = [];
+    moves.forEach((move) => {
+      switch (move) {
+        case 'up':
+          newMoves.push('down');
+          break;
+        case 'down':
+          newMoves.push('up');
+          break;
+        case 'left':
+          newMoves.push('right');
+          break;
+        case 'right':
+          newMoves.push('left');
+          break;
+        default:
+          return;
+      }
+    });
+    return newMoves;
+  }
+
+  makeMoves() {
+    
+  }
+
   render() {
     const tiles = this.makeTiles();
     return (
@@ -247,7 +298,8 @@ export default class Game extends React.Component {
         <div className="board" onKeyDown={this.handleKeyPress}>
           {tiles}
         </div>
-        <div onClick={this.shuffleBoard}>shuffleBoard</div>
+        <div onClick={this.shuffleBoard}>Shuffle</div>
+        <div onClick={this.solve}>Solve</div>
       </div>
     );
   }

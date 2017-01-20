@@ -21608,10 +21608,12 @@
 	    _this.moveTileLeft = _this.moveTileLeft.bind(_this);
 	    _this.handleKeyPress = _this.handleKeyPress.bind(_this);
 	    _this.shuffleBoard = _this.shuffleBoard.bind(_this);
+	    _this.solve = _this.solve.bind(_this);
 	    _this.state = {
 	      won: false,
 	      tiles: [],
-	      busy: false
+	      busy: false,
+	      movesFromSolved: []
 	    };
 	    return _this;
 	  }
@@ -21619,22 +21621,26 @@
 	  _createClass(Game, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
+	      var _this2 = this;
+	
 	      window.addEventListener("keydown", this.handleKeyPress);
 	      var tiles = this.makeGameArray();
-	      this.setState({ tiles: tiles });
+	      this.setState({ tiles: tiles }, function () {
+	        _this2.shuffleBoard();
+	      });
 	    }
 	  }, {
 	    key: 'makeGameArray',
 	    value: function makeGameArray() {
 	      var array = [];
-	      for (var i = 1; i <= 15; i += 1) {
+	      for (var i = 0; i <= 15; i += 1) {
 	        array.push(i);
 	      }
-	      array.push(0);
-	      array = shuffleArray(array);
-	      while (!this.isSolvable(array)) {
-	        array = shuffleArray(array);
-	      }
+	      // array.push(0);
+	      // array = shuffleArray(array);
+	      // while (!this.isSolvable(array)) {
+	      //   array = shuffleArray(array);
+	      // }
 	      return array;
 	    }
 	
@@ -21685,15 +21691,19 @@
 	      switch (event.key) {
 	        case 'ArrowUp':
 	          this.moveTileUp();
+	          emptyTileIndex -= 4;
 	          break;
 	        case 'ArrowDown':
 	          this.moveTileDown();
+	          emptyTileIndex += 4;
 	          break;
 	        case 'ArrowRight':
 	          this.moveTileRight();
+	          emptyTileIndex += 1;
 	          break;
 	        case 'ArrowLeft':
 	          this.moveTileLeft();
+	          emptyTileIndex -= 1;
 	          break;
 	        default:
 	          return;
@@ -21703,48 +21713,61 @@
 	    key: 'moveTileUp',
 	    value: function moveTileUp() {
 	      console.log("up");
-	      var emptyTileIndex = this.findEmptyTile();
+	      var emptyTileIdx = this.findEmptyTile();
 	      var tiles = this.state.tiles;
-	      if (emptyTileIndex > 3) {
-	        tiles[emptyTileIndex] = tiles[emptyTileIndex - 4];
-	        tiles[emptyTileIndex - 4] = 0;
-	        this.setState({ tiles: tiles });
+	      var movesFromSolved = this.state.movesFromSolved;
+	
+	      if (emptyTileIdx > 3) {
+	        tiles[emptyTileIdx] = tiles[emptyTileIdx - 4];
+	        tiles[emptyTileIdx - 4] = 0;
+	        movesFromSolved.push("up");
+	        this.setState({ tiles: tiles, movesFromSolved: movesFromSolved });
 	      }
 	    }
 	  }, {
 	    key: 'moveTileDown',
 	    value: function moveTileDown() {
 	      console.log("down");
-	      var emptyTileIndex = this.findEmptyTile();
+	      var emptyTileIdx = this.findEmptyTile();
 	      var tiles = this.state.tiles;
-	      if (emptyTileIndex <= 11) {
-	        tiles[emptyTileIndex] = tiles[emptyTileIndex + 4];
-	        tiles[emptyTileIndex + 4] = 0;
-	        this.setState({ tiles: tiles });
+	      var movesFromSolved = this.state.movesFromSolved;
+	
+	      if (emptyTileIdx <= 11) {
+	        tiles[emptyTileIdx] = tiles[emptyTileIdx + 4];
+	        tiles[emptyTileIdx + 4] = 0;
+	        movesFromSolved.push("down");
+	        this.setState({ tiles: tiles, movesFromSolved: movesFromSolved });
 	      }
 	    }
 	  }, {
 	    key: 'moveTileLeft',
 	    value: function moveTileLeft() {
 	      console.log("left");
-	      var emptyTileIndex = this.findEmptyTile();
+	      var emptyTileIdx = this.findEmptyTile();
 	      var tiles = this.state.tiles;
-	      if (emptyTileIndex % 4 !== 0) {
-	        tiles[emptyTileIndex] = tiles[emptyTileIndex - 1];
-	        tiles[emptyTileIndex - 1] = 0;
-	        this.setState({ tiles: tiles });
+	      var movesFromSolved = this.state.movesFromSolved;
+	
+	      if (emptyTileIdx % 4 !== 0) {
+	        tiles[emptyTileIdx] = tiles[emptyTileIdx - 1];
+	        tiles[emptyTileIdx - 1] = 0;
+	        movesFromSolved.push("left");
+	        this.setState({ tiles: tiles, movesFromSolved: movesFromSolved });
 	      }
 	    }
 	  }, {
 	    key: 'moveTileRight',
 	    value: function moveTileRight() {
 	      console.log("right");
-	      var emptyTileIndex = this.findEmptyTile();
+	      var emptyTileIdx = this.findEmptyTile();
 	      var tiles = this.state.tiles;
-	      if (![3, 7, 11, 15].includes(emptyTileIndex)) {
-	        tiles[emptyTileIndex] = tiles[emptyTileIndex + 1];
-	        tiles[emptyTileIndex + 1] = 0;
-	        this.setState({ tiles: tiles });
+	      var movesFromSolved = this.state.movesFromSolved;
+	
+	      if (![3, 7, 11, 15].includes(emptyTileIdx)) {
+	        tiles[emptyTileIdx] = tiles[emptyTileIdx + 1];
+	        tiles[emptyTileIdx + 1] = 0;
+	        movesFromSolved.push("right");
+	
+	        this.setState({ tiles: tiles, movesFromSolved: movesFromSolved });
 	      }
 	    }
 	  }, {
@@ -21766,7 +21789,6 @@
 	  }, {
 	    key: 'shuffleBoard',
 	    value: function shuffleBoard() {
-	
 	      if (this.state.busy) {
 	        return;
 	      } else {
@@ -21774,29 +21796,28 @@
 	      }
 	
 	      var delay = 500;
-	      delay = this.make20Moves(delay);
+	      delay = this.make40Moves(delay);
 	      // while (!this.isSolvable(this.state.tiles)) {
-	      //   delay = this.make20Moves(delay);
+	      //   delay = this.make40Moves(delay);
 	      // }
-	
 	      this.setState({ busy: false });
 	    }
 	  }, {
-	    key: 'make20Moves',
-	    value: function make20Moves(delay) {
+	    key: 'make40Moves',
+	    value: function make40Moves(delay) {
 	      var tiles = this.state.tiles;
 	      emptyTileIndex = tiles.indexOf(0);
 	
 	      for (var i = 0; i < 40; i += 1) {
 	        this.makeMove(delay);
-	        delay += 200;
+	        delay += 100;
 	      }
 	      return delay;
 	    }
 	  }, {
 	    key: 'makeMove',
 	    value: function makeMove(delay) {
-	      var _this2 = this;
+	      var _this3 = this;
 	
 	      var rand = Math.floor(Math.random() * 4);
 	      rand = this.fixRand(rand);
@@ -21804,25 +21825,25 @@
 	      switch (rand) {
 	        case 0:
 	          setTimeout(function () {
-	            _this2.moveTileUp(emptyTileIndex);
+	            _this3.moveTileUp(emptyTileIndex);
 	          }, delay);
 	          emptyTileIndex -= 4;
 	          break;
 	        case 1:
 	          setTimeout(function () {
-	            _this2.moveTileDown(emptyTileIndex);
+	            _this3.moveTileDown(emptyTileIndex);
 	          }, delay);
 	          emptyTileIndex += 4;
 	          break;
 	        case 2:
 	          setTimeout(function () {
-	            _this2.moveTileLeft(emptyTileIndex);
+	            _this3.moveTileLeft(emptyTileIndex);
 	          }, delay);
 	          emptyTileIndex -= 1;
 	          break;
 	        case 3:
 	          setTimeout(function () {
-	            _this2.moveTileRight(emptyTileIndex);
+	            _this3.moveTileRight(emptyTileIndex);
 	          }, delay);
 	          emptyTileIndex += 1;
 	          break;
@@ -21846,6 +21867,40 @@
 	      return rand;
 	    }
 	  }, {
+	    key: 'solve',
+	    value: function solve() {
+	      var reversedMovesFromSolved = this.state.movesFromSolved.reverse();
+	      var movesToMake = this.invertMoves(reversedMovesFromSolved);
+	      makeMoves(movesToMake);
+	    }
+	  }, {
+	    key: 'invert',
+	    value: function invert(moves) {
+	      var newMoves = [];
+	      moves.forEach(function (move) {
+	        switch (move) {
+	          case 'up':
+	            newMoves.push('down');
+	            break;
+	          case 'down':
+	            newMoves.push('up');
+	            break;
+	          case 'left':
+	            newMoves.push('right');
+	            break;
+	          case 'right':
+	            newMoves.push('left');
+	            break;
+	          default:
+	            return;
+	        }
+	      });
+	      return newMoves;
+	    }
+	  }, {
+	    key: 'makeMoves',
+	    value: function makeMoves() {}
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var tiles = this.makeTiles();
@@ -21860,7 +21915,12 @@
 	        _react2.default.createElement(
 	          'div',
 	          { onClick: this.shuffleBoard },
-	          'shuffleBoard'
+	          'Shuffle'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { onClick: this.solve },
+	          'Solve'
 	        )
 	      );
 	    }
