@@ -21600,6 +21600,9 @@
 	
 	    var GAME_SIZE = 15;
 	    _this.moveTileUp = _this.moveTileUp.bind(_this);
+	    _this.moveTileDown = _this.moveTileDown.bind(_this);
+	    _this.moveTileRight = _this.moveTileRight.bind(_this);
+	    _this.moveTileLeft = _this.moveTileLeft.bind(_this);
 	    _this.handleKeyPress = _this.handleKeyPress.bind(_this);
 	    _this.state = {
 	      won: false,
@@ -21648,13 +21651,13 @@
 	          this.moveTileUp();
 	          break;
 	        case 'ArrowDown':
-	
+	          this.moveTileDown();
 	          break;
 	        case 'ArrowRight':
-	
+	          this.moveTileRight();
 	          break;
 	        case 'ArrowLeft':
-	
+	          this.moveTileLeft();
 	          break;
 	        default:
 	          return;
@@ -21665,9 +21668,42 @@
 	    value: function moveTileUp() {
 	      var emptyTileIndex = this.findEmptyTile();
 	      var tiles = this.state.tiles;
-	      if (emptyTileIndex > 4) {
+	      if (emptyTileIndex > 3) {
 	        tiles[emptyTileIndex] = tiles[emptyTileIndex - 4];
 	        tiles[emptyTileIndex - 4] = 0;
+	        this.setState({ tiles: tiles });
+	      }
+	    }
+	  }, {
+	    key: 'moveTileDown',
+	    value: function moveTileDown() {
+	      var emptyTileIndex = this.findEmptyTile();
+	      var tiles = this.state.tiles;
+	      if (emptyTileIndex <= 11) {
+	        tiles[emptyTileIndex] = tiles[emptyTileIndex + 4];
+	        tiles[emptyTileIndex + 4] = 0;
+	        this.setState({ tiles: tiles });
+	      }
+	    }
+	  }, {
+	    key: 'moveTileLeft',
+	    value: function moveTileLeft() {
+	      var emptyTileIndex = this.findEmptyTile();
+	      var tiles = this.state.tiles;
+	      if (emptyTileIndex % 4 !== 0) {
+	        tiles[emptyTileIndex] = tiles[emptyTileIndex - 1];
+	        tiles[emptyTileIndex - 1] = 0;
+	        this.setState({ tiles: tiles });
+	      }
+	    }
+	  }, {
+	    key: 'moveTileRight',
+	    value: function moveTileRight() {
+	      var emptyTileIndex = this.findEmptyTile();
+	      var tiles = this.state.tiles;
+	      if (![3, 7, 11, 15].includes(emptyTileIndex)) {
+	        tiles[emptyTileIndex] = tiles[emptyTileIndex + 1];
+	        tiles[emptyTileIndex + 1] = 0;
 	        this.setState({ tiles: tiles });
 	      }
 	    }

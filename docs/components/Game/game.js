@@ -18,6 +18,9 @@ export default class Game extends React.Component {
     super();
     const GAME_SIZE = 15;
     this.moveTileUp = this.moveTileUp.bind(this);
+    this.moveTileDown = this.moveTileDown.bind(this);
+    this.moveTileRight = this.moveTileRight.bind(this);
+    this.moveTileLeft = this.moveTileLeft.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.state = {
       won: false,
@@ -60,13 +63,13 @@ export default class Game extends React.Component {
         this.moveTileUp();
         break;
       case 'ArrowDown':
-
+        this.moveTileDown();
         break;
       case 'ArrowRight':
-
+        this.moveTileRight();
         break;
       case 'ArrowLeft':
-
+        this.moveTileLeft();
         break;
       default:
         return;
@@ -76,9 +79,39 @@ export default class Game extends React.Component {
   moveTileUp() {
     const emptyTileIndex = this.findEmptyTile();
     const tiles = this.state.tiles;
-    if (emptyTileIndex > 4) {
+    if (emptyTileIndex > 3) {
       tiles[emptyTileIndex] = tiles[emptyTileIndex - 4];
       tiles[emptyTileIndex - 4] = 0;
+      this.setState({ tiles });
+    }
+  }
+
+  moveTileDown() {
+    const emptyTileIndex = this.findEmptyTile();
+    const tiles = this.state.tiles;
+    if (emptyTileIndex <= 11) {
+      tiles[emptyTileIndex] = tiles[emptyTileIndex + 4];
+      tiles[emptyTileIndex + 4] = 0;
+      this.setState({ tiles });
+    }
+  }
+
+  moveTileLeft() {
+    const emptyTileIndex = this.findEmptyTile();
+    const tiles = this.state.tiles;
+    if (emptyTileIndex % 4 !== 0) {
+      tiles[emptyTileIndex] = tiles[emptyTileIndex - 1];
+      tiles[emptyTileIndex - 1] = 0;
+      this.setState({ tiles });
+    }
+  }
+
+  moveTileRight() {
+    const emptyTileIndex = this.findEmptyTile();
+    const tiles = this.state.tiles;
+    if (![3, 7, 11, 15].includes(emptyTileIndex)) {
+      tiles[emptyTileIndex] = tiles[emptyTileIndex + 1];
+      tiles[emptyTileIndex + 1] = 0;
       this.setState({ tiles });
     }
   }
