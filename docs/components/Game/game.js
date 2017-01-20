@@ -17,6 +17,8 @@ export default class Game extends React.Component {
   constructor() {
     super();
     const GAME_SIZE = 15;
+    this.moveTileUp = this.moveTileUp.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.state = {
       won: false,
       tiles: [],
@@ -24,6 +26,7 @@ export default class Game extends React.Component {
   }
 
   componentWillMount() {
+    window.addEventListener("keydown", this.handleKeyPress);
     const tiles = this.makeGameArray();
     this.setState({ tiles });
   }
@@ -51,10 +54,48 @@ export default class Game extends React.Component {
     return tiles;
   }
 
+  handleKeyPress(event) {
+    switch (event.key) {
+      case 'ArrowUp':
+        this.moveTileUp();
+        break;
+      case 'ArrowDown':
+
+        break;
+      case 'ArrowRight':
+
+        break;
+      case 'ArrowLeft':
+
+        break;
+      default:
+        return;
+    }
+  }
+
+  moveTileUp() {
+    const emptyTileIndex = this.findEmptyTile();
+    const tiles = this.state.tiles;
+    if (emptyTileIndex > 4) {
+      tiles[emptyTileIndex] = tiles[emptyTileIndex - 4];
+      tiles[emptyTileIndex - 4] = 0;
+      this.setState({ tiles });
+    }
+  }
+
+  findEmptyTile() {
+    const tiles = this.state.tiles;
+    for (let i = 0; i < tiles.length; i += 1 ) {
+      if (tiles[i] === 0) {
+        return i;
+      }
+    }
+  }
+
   render() {
     const tiles = this.makeTiles();
     return (
-      <div className="board">
+      <div className="board" onKeyDown={this.handleKeyPress}>
         {tiles}
       </div>
     );

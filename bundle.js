@@ -21599,6 +21599,8 @@
 	    var _this = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this));
 	
 	    var GAME_SIZE = 15;
+	    _this.moveTileUp = _this.moveTileUp.bind(_this);
+	    _this.handleKeyPress = _this.handleKeyPress.bind(_this);
 	    _this.state = {
 	      won: false,
 	      tiles: []
@@ -21609,6 +21611,7 @@
 	  _createClass(Game, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
+	      window.addEventListener("keydown", this.handleKeyPress);
 	      var tiles = this.makeGameArray();
 	      this.setState({ tiles: tiles });
 	    }
@@ -21638,12 +21641,53 @@
 	      return tiles;
 	    }
 	  }, {
+	    key: 'handleKeyPress',
+	    value: function handleKeyPress(event) {
+	      switch (event.key) {
+	        case 'ArrowUp':
+	          this.moveTileUp();
+	          break;
+	        case 'ArrowDown':
+	
+	          break;
+	        case 'ArrowRight':
+	
+	          break;
+	        case 'ArrowLeft':
+	
+	          break;
+	        default:
+	          return;
+	      }
+	    }
+	  }, {
+	    key: 'moveTileUp',
+	    value: function moveTileUp() {
+	      var emptyTileIndex = this.findEmptyTile();
+	      var tiles = this.state.tiles;
+	      if (emptyTileIndex > 4) {
+	        tiles[emptyTileIndex] = tiles[emptyTileIndex - 4];
+	        tiles[emptyTileIndex - 4] = 0;
+	        this.setState({ tiles: tiles });
+	      }
+	    }
+	  }, {
+	    key: 'findEmptyTile',
+	    value: function findEmptyTile() {
+	      var tiles = this.state.tiles;
+	      for (var i = 0; i < tiles.length; i += 1) {
+	        if (tiles[i] === 0) {
+	          return i;
+	        }
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var tiles = this.makeTiles();
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'board' },
+	        { className: 'board', onKeyDown: this.handleKeyPress },
 	        tiles
 	      );
 	    }
