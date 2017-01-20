@@ -125,6 +125,13 @@ export default class Game extends React.Component {
     }
   }
 
+  gameWon() {
+    const solved = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0];
+    return (
+      this.state.tiles === solved
+    );
+  }
+
   render() {
     const tiles = this.makeTiles();
     return (
