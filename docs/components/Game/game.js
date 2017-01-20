@@ -39,9 +39,29 @@ export default class Game extends React.Component {
     for (let i = 1; i <= 15; i += 1) {
       array.push(i);
     }
+
     array = shuffleArray(array);
+    while (!this.isSolvable(array)) {
+      array = shuffleArray(array);
+    }
+
     array.push(0);
     return array;
+  }
+
+  // Where blank tile starts on odd row from bottom (always the case)
+  // A game is solvable if the number of inversions is even
+  // see: http://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
+  isSolvable(array) {
+    let inversions = 0;
+    for (let i = 0; i < array.length - 1; i += 1) {
+      for (let j = i; j < array.length; j += 1 ) {
+        if (array[i] > array[j]) {
+          inversions += 1;
+        }
+      }
+    }
+  return (inversions % 2 === 0);
   }
 
   makeTiles() {
