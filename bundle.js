@@ -21625,12 +21625,10 @@
 	      for (var i = 1; i <= 15; i += 1) {
 	        array.push(i);
 	      }
-	
 	      array = shuffleArray(array);
 	      while (!this.isSolvable(array)) {
 	        array = shuffleArray(array);
 	      }
-	
 	      array.push(0);
 	      return array;
 	    }
@@ -21661,7 +21659,7 @@
 	        if (num === 0) {
 	          tiles.push(_react2.default.createElement(_empty_tile2.default, null));
 	        } else {
-	          tiles.push(_react2.default.createElement(_tile2.default, { number: num }));
+	          tiles.push(_react2.default.createElement(_tile2.default, { number: num, key: num }));
 	        }
 	      });
 	      return tiles;
@@ -21746,6 +21744,9 @@
 	      var solved = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0];
 	      return this.state.tiles === solved;
 	    }
+	  }, {
+	    key: 'shuffleBoard',
+	    value: function shuffleBoard() {}
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -21848,7 +21849,7 @@
 	  _createClass(EmptyTile, [{
 	    key: "render",
 	    value: function render() {
-	      return _react2.default.createElement("div", { className: "tile" });
+	      return _react2.default.createElement("div", { className: "tile empty" });
 	    }
 	  }]);
 	

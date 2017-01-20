@@ -1,8 +1,11 @@
 .board {
-  width: 408px;
-  height: 400px;
+  width: 440px;
+  height: 440px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  background: grey;
 }
 
 .tile {
@@ -11,7 +14,13 @@
   font-size: 20px;
   line-height: 100px;
   font-family: Helvetica;
-  background: grey;
+  background: blue;
   text-align: center;
   border: solid red 1px;
+
+}
+
+.empty {
+  background: grey;
+
 }

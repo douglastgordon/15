@@ -8,7 +8,7 @@ export default class EmptyTile extends React.Component {
 
   render() {
     return (
-      <div className="tile"></div>
+      <div className="tile empty"></div>
     );
   }
 

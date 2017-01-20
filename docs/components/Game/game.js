@@ -39,12 +39,10 @@ export default class Game extends React.Component {
     for (let i = 1; i <= 15; i += 1) {
       array.push(i);
     }
-
     array = shuffleArray(array);
     while (!this.isSolvable(array)) {
       array = shuffleArray(array);
     }
-
     array.push(0);
     return array;
   }
@@ -71,7 +69,7 @@ export default class Game extends React.Component {
       if (num === 0) {
         tiles.push(<EmptyTile />);
       } else {
-        tiles.push(<Tile number={num} />);
+        tiles.push(<Tile number={num} key={num} />);
       }
     });
     return tiles;
@@ -150,6 +148,10 @@ export default class Game extends React.Component {
     return (
       this.state.tiles === solved
     );
+  }
+
+  shuffleBoard() {
+    
   }
 
   render() {
