@@ -45,10 +45,10 @@ export default class Game extends React.Component {
 
   makeGameArray() {
     let array = [];
-    for (let i =0; i <= 15; i += 1) {
+    for (let i = 1; i <= 15; i += 1) {
       array.push(i);
     }
-    // array.push(0);
+    array.push(0);
     // array = shuffleArray(array);
     // while (!this.isSolvable(array)) {
     //   array = shuffleArray(array);
@@ -228,7 +228,7 @@ export default class Game extends React.Component {
         emptyTileIndex -= 4;
         break;
       case 1:
-      setTimeout(() => { this.moveTileDown(emptyTileIndex); }, delay);
+        setTimeout(() => { this.moveTileDown(emptyTileIndex); }, delay);
         emptyTileIndex += 4;
         break;
       case 2:
@@ -261,10 +261,10 @@ export default class Game extends React.Component {
   solve() {
     const reversedMovesFromSolved = this.state.movesFromSolved.reverse();
     const movesToMake = this.invertMoves(reversedMovesFromSolved);
-    makeMoves(movesToMake);
+    this.runAI(movesToMake);
   }
 
-  invert(moves) {
+  invertMoves(moves) {
     const newMoves = [];
     moves.forEach((move) => {
       switch (move) {
@@ -287,8 +287,31 @@ export default class Game extends React.Component {
     return newMoves;
   }
 
-  makeMoves() {
-    
+  runAI(moves) {
+    let delay = 500;
+    moves.forEach((move) => {
+      this.singleAImove(move, delay);
+      delay += 100;
+    });
+  }
+
+  singleAImove(move, delay) {
+    switch (move) {
+      case 'up':
+        setTimeout(() => { this.moveTileUp(emptyTileIndex); }, delay);
+        break;
+      case 'down':
+        setTimeout(() => { this.moveTileDown(emptyTileIndex); }, delay);
+        break;
+      case 'left':
+        setTimeout(() => { this.moveTileLeft(emptyTileIndex); }, delay);
+        break;
+      case 'right':
+        setTimeout(() => { this.moveTileRight(emptyTileIndex); }, delay);
+        break;
+      default:
+        return;
+    }
   }
 
   render() {

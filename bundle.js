@@ -21633,10 +21633,10 @@
 	    key: 'makeGameArray',
 	    value: function makeGameArray() {
 	      var array = [];
-	      for (var i = 0; i <= 15; i += 1) {
+	      for (var i = 1; i <= 15; i += 1) {
 	        array.push(i);
 	      }
-	      // array.push(0);
+	      array.push(0);
 	      // array = shuffleArray(array);
 	      // while (!this.isSolvable(array)) {
 	      //   array = shuffleArray(array);
@@ -21871,11 +21871,11 @@
 	    value: function solve() {
 	      var reversedMovesFromSolved = this.state.movesFromSolved.reverse();
 	      var movesToMake = this.invertMoves(reversedMovesFromSolved);
-	      makeMoves(movesToMake);
+	      this.runAI(movesToMake);
 	    }
 	  }, {
-	    key: 'invert',
-	    value: function invert(moves) {
+	    key: 'invertMoves',
+	    value: function invertMoves(moves) {
 	      var newMoves = [];
 	      moves.forEach(function (move) {
 	        switch (move) {
@@ -21898,8 +21898,46 @@
 	      return newMoves;
 	    }
 	  }, {
-	    key: 'makeMoves',
-	    value: function makeMoves() {}
+	    key: 'runAI',
+	    value: function runAI(moves) {
+	      var _this4 = this;
+	
+	      var delay = 500;
+	      moves.forEach(function (move) {
+	        _this4.singleAImove(move, delay);
+	        delay += 100;
+	      });
+	    }
+	  }, {
+	    key: 'singleAImove',
+	    value: function singleAImove(move, delay) {
+	      var _this5 = this;
+	
+	      switch (move) {
+	        case 'up':
+	          setTimeout(function () {
+	            _this5.moveTileUp(emptyTileIndex);
+	          }, delay);
+	          break;
+	        case 'down':
+	          setTimeout(function () {
+	            _this5.moveTileDown(emptyTileIndex);
+	          }, delay);
+	          break;
+	        case 'left':
+	          setTimeout(function () {
+	            _this5.moveTileLeft(emptyTileIndex);
+	          }, delay);
+	          break;
+	        case 'right':
+	          setTimeout(function () {
+	            _this5.moveTileRight(emptyTileIndex);
+	          }, delay);
+	          break;
+	        default:
+	          return;
+	      }
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
