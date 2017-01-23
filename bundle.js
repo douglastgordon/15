@@ -21992,7 +21992,7 @@
 	    value: function render() {
 	
 	      var reds = [1, 3, 6, 8, 9, 11, 14];
-	      var color = reds.includes(this.props.number) ? 'blue' : 'red';
+	      var color = reds.includes(this.props.number) ? 'cream' : 'red';
 	
 	      return _react2.default.createElement(
 	        'div',
