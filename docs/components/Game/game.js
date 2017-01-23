@@ -1,4 +1,5 @@
 import React from 'react';
+import FlipMove from 'react-flip-move';
 import Tile from '../Tile/tile';
 import EmptyTile from '../Tile/empty_tile';
 
@@ -54,7 +55,7 @@ export default class Game extends React.Component {
     const tiles = [];
     gameArray.forEach((num) => {
       if (num === 0) {
-        tiles.push(<EmptyTile />);
+        tiles.push(<EmptyTile key={num} />);
       } else {
         tiles.push(<Tile number={num} key={num} />);
       }
@@ -300,9 +301,9 @@ export default class Game extends React.Component {
     return (
       <div>
         <h1>15 Puzzle</h1>
-        <div className="board" onKeyDown={this.handleKeyPress}>
-          {tiles}
-        </div>
+          <FlipMove className="board" onKeyDown={this.handleKeyPress} easing="cubic-bezier(0, 0, 1, 1)" duration="100">
+            {tiles}
+          </FlipMove>
         {buttons}
       </div>
     );
