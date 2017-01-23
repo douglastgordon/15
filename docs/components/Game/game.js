@@ -96,6 +96,7 @@ export default class Game extends React.Component {
   }
 
   handleKeyPress(event) {
+    if (this.state.busy) { return; }
     switch (event.key) {
       case 'ArrowUp':
         this.moveTileUp();
@@ -203,7 +204,7 @@ export default class Game extends React.Component {
     // while (!this.isSolvable(this.state.tiles)) {
     //   delay = this.make40Moves(delay);
     // }
-    this.setState({ busy: false });
+    setTimeout(() => { this.setState({ busy: false }); }, delay);
   }
 
   make40Moves(delay) {
@@ -259,6 +260,7 @@ export default class Game extends React.Component {
   }
 
   solve() {
+    this.setState({ busy: true });
     const reversedMovesFromSolved = this.state.movesFromSolved.reverse();
     const movesToMake = this.invertMoves(reversedMovesFromSolved);
     this.runAI(movesToMake);
@@ -293,6 +295,9 @@ export default class Game extends React.Component {
       this.singleAImove(move, delay);
       delay += 100;
     });
+    setTimeout(() => {
+      this.setState({ busy: false });
+    }, delay);
   }
 
   singleAImove(move, delay) {
@@ -316,13 +321,22 @@ export default class Game extends React.Component {
 
   render() {
     const tiles = this.makeTiles();
+    let buttons;
+    if (!this.state.busy) {
+      buttons = (
+        <div>
+          <div onClick={this.shuffleBoard}>Shuffle</div>
+          <div onClick={this.solve}>Solve</div>
+        </div>
+      );
+    }
+
     return (
       <div>
         <div className="board" onKeyDown={this.handleKeyPress}>
           {tiles}
         </div>
-        <div onClick={this.shuffleBoard}>Shuffle</div>
-        <div onClick={this.solve}>Solve</div>
+        {buttons}
       </div>
     );
   }
