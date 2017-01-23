@@ -21915,7 +21915,7 @@
 	      if (!this.state.busy) {
 	        buttons = _react2.default.createElement(
 	          'div',
-	          null,
+	          { className: 'buttons' },
 	          _react2.default.createElement(
 	            'div',
 	            { onClick: this.shuffleBoard },

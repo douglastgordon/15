@@ -288,7 +288,7 @@ export default class Game extends React.Component {
     let buttons;
     if (!this.state.busy) {
       buttons = (
-        <div>
+        <div className="buttons">
           <div onClick={this.shuffleBoard}>Shuffle</div>
           <div onClick={this.solve}>Solve</div>
         </div>

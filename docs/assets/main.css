@@ -1,3 +1,15 @@
+body {
+  text-align: center;
+  padding: 10px;
+}
+
+h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 40px;
+  color: black;
+  padding-bottom: 10px;
+}
+
 .board {
   width: 340px;
   height: 340px;
@@ -36,14 +48,17 @@
   background-color: #FFCDD2;
 }
 
-body {
-  text-align: center;
-  padding: 10px;
+.buttons {
+  font-family: 'Orbitron', sans-serif;
+  color: black;
+  font-size: 15px;
+  display: flex;
+  width: 150px;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding-top: 20px;
 }
 
-h1 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 40px;
-  color: black;
-  padding-bottom: 10px;
+.buttons div {
+  cursor: pointer;
 }
