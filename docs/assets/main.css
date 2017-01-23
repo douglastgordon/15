@@ -28,7 +28,7 @@ h1 {
   width: 80px;
   height: 80px;
   font-size: 30px;
-  color: white;
+  /*color: #009688;*/
   line-height: 80px;
   font-family: Helvetica;
   text-align: center;
@@ -37,11 +37,12 @@ h1 {
 }
 
 .red {
+  color: #FCFBE3;
   background-color: #F44336;
 }
 
 .cream {
-  color: black;
+  color: #F44336;
   background-color: #FCFBE3;
 }
 
