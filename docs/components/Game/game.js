@@ -296,7 +296,7 @@ export default class Game extends React.Component {
       delay += 100;
     });
     setTimeout(() => {
-      this.setState({ busy: false });
+      this.setState({ busy: false, movesFromSolved: [] });
     }, delay);
   }
 

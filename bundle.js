@@ -21916,7 +21916,7 @@
 	        delay += 100;
 	      });
 	      setTimeout(function () {
-	        _this5.setState({ busy: false });
+	        _this5.setState({ busy: false, movesFromSolved: [] });
 	      }, delay);
 	    }
 	  }, {
