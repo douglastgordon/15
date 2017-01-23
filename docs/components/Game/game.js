@@ -28,7 +28,6 @@ export default class Game extends React.Component {
     this.shuffleBoard = this.shuffleBoard.bind(this);
     this.solve = this.solve.bind(this);
     this.state = {
-      won: false,
       tiles: [],
       busy: false,
       movesFromSolved: [],
@@ -224,6 +223,9 @@ export default class Game extends React.Component {
   }
 
   solve() {
+    if (this.gameWon()) {
+      return;
+    }
     this.setState({ busy: true });
     const reversedMovesFromSolved = this.state.movesFromSolved.reverse();
     const movesToMake = this.invertMoves(reversedMovesFromSolved);

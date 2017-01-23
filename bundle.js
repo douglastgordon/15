@@ -21610,7 +21610,6 @@
 	    _this.shuffleBoard = _this.shuffleBoard.bind(_this);
 	    _this.solve = _this.solve.bind(_this);
 	    _this.state = {
-	      won: false,
 	      tiles: [],
 	      busy: false,
 	      movesFromSolved: []
@@ -21834,6 +21833,9 @@
 	  }, {
 	    key: 'solve',
 	    value: function solve() {
+	      if (this.gameWon()) {
+	        return;
+	      }
 	      this.setState({ busy: true });
 	      var reversedMovesFromSolved = this.state.movesFromSolved.reverse();
 	      var movesToMake = this.invertMoves(reversedMovesFromSolved);
