@@ -21621,13 +21621,9 @@
 	  _createClass(Game, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      var _this2 = this;
-	
 	      window.addEventListener("keydown", this.handleKeyPress);
 	      var tiles = this.makeGameArray();
-	      this.setState({ tiles: tiles }, function () {
-	        _this2.shuffleBoard();
-	      });
+	      this.setState({ tiles: tiles });
 	    }
 	  }, {
 	    key: 'makeGameArray',
@@ -21756,7 +21752,7 @@
 	  }, {
 	    key: 'shuffleBoard',
 	    value: function shuffleBoard() {
-	      var _this3 = this;
+	      var _this2 = this;
 	
 	      if (this.state.busy) {
 	        return;
@@ -21768,7 +21764,7 @@
 	      delay = this.make40Moves(delay);
 	
 	      setTimeout(function () {
-	        _this3.setState({ busy: false });
+	        _this2.setState({ busy: false });
 	      }, delay);
 	    }
 	  }, {
@@ -21786,7 +21782,7 @@
 	  }, {
 	    key: 'makeMove',
 	    value: function makeMove(delay) {
-	      var _this4 = this;
+	      var _this3 = this;
 	
 	      var rand = Math.floor(Math.random() * 4);
 	      rand = this.fixRand(rand);
@@ -21794,25 +21790,25 @@
 	      switch (rand) {
 	        case 0:
 	          setTimeout(function () {
-	            _this4.moveTileUp(emptyTileIndex);
+	            _this3.moveTileUp(emptyTileIndex);
 	          }, delay);
 	          emptyTileIndex -= 4;
 	          break;
 	        case 1:
 	          setTimeout(function () {
-	            _this4.moveTileDown(emptyTileIndex);
+	            _this3.moveTileDown(emptyTileIndex);
 	          }, delay);
 	          emptyTileIndex += 4;
 	          break;
 	        case 2:
 	          setTimeout(function () {
-	            _this4.moveTileLeft(emptyTileIndex);
+	            _this3.moveTileLeft(emptyTileIndex);
 	          }, delay);
 	          emptyTileIndex -= 1;
 	          break;
 	        case 3:
 	          setTimeout(function () {
-	            _this4.moveTileRight(emptyTileIndex);
+	            _this3.moveTileRight(emptyTileIndex);
 	          }, delay);
 	          emptyTileIndex += 1;
 	          break;
@@ -21870,41 +21866,41 @@
 	  }, {
 	    key: 'runAI',
 	    value: function runAI(moves) {
-	      var _this5 = this;
+	      var _this4 = this;
 	
 	      var delay = 500;
 	      moves.forEach(function (move) {
-	        _this5.singleAImove(move, delay);
+	        _this4.singleAImove(move, delay);
 	        delay += 100;
 	      });
 	      setTimeout(function () {
-	        _this5.setState({ busy: false, movesFromSolved: [] });
+	        _this4.setState({ busy: false, movesFromSolved: [] });
 	      }, delay);
 	    }
 	  }, {
 	    key: 'singleAImove',
 	    value: function singleAImove(move, delay) {
-	      var _this6 = this;
+	      var _this5 = this;
 	
 	      switch (move) {
 	        case 'up':
 	          setTimeout(function () {
-	            _this6.moveTileUp(emptyTileIndex);
+	            _this5.moveTileUp(emptyTileIndex);
 	          }, delay);
 	          break;
 	        case 'down':
 	          setTimeout(function () {
-	            _this6.moveTileDown(emptyTileIndex);
+	            _this5.moveTileDown(emptyTileIndex);
 	          }, delay);
 	          break;
 	        case 'left':
 	          setTimeout(function () {
-	            _this6.moveTileLeft(emptyTileIndex);
+	            _this5.moveTileLeft(emptyTileIndex);
 	          }, delay);
 	          break;
 	        case 'right':
 	          setTimeout(function () {
-	            _this6.moveTileRight(emptyTileIndex);
+	            _this5.moveTileRight(emptyTileIndex);
 	          }, delay);
 	          break;
 	        default:
@@ -21936,6 +21932,11 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
+	        _react2.default.createElement(
+	          'h1',
+	          null,
+	          '15 Puzzle'
+	        ),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'board', onKeyDown: this.handleKeyPress },

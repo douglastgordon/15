@@ -38,9 +38,7 @@ export default class Game extends React.Component {
   componentWillMount() {
     window.addEventListener("keydown", this.handleKeyPress);
     const tiles = this.makeGameArray();
-    this.setState({ tiles }, () => {
-      this.shuffleBoard();
-    });
+    this.setState({ tiles });
   }
 
   makeGameArray() {
@@ -299,6 +297,7 @@ export default class Game extends React.Component {
 
     return (
       <div>
+        <h1>15 Puzzle</h1>
         <div className="board" onKeyDown={this.handleKeyPress}>
           {tiles}
         </div>

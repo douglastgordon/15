@@ -1,6 +1,6 @@
 .board {
-  width: 440px;
-  height: 440px;
+  width: 340px;
+  height: 340px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -8,15 +8,16 @@
   background-color: #FFCDD2;
   border: solid 5px #D32F2F;
   border-radius: 5px;
+  margin: 0 auto;
 }
 
 
 .tile {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   font-size: 30px;
   color: white;
-  line-height: 100px;
+  line-height: 80px;
   font-family: Helvetica;
   text-align: center;
   border-radius: 5px;
@@ -32,7 +33,17 @@
 }
 
 .empty {
-  /*background-color: #607D8B;*/
   background-color: #FFCDD2;
+}
 
+body {
+  text-align: center;
+  padding: 10px;
+}
+
+h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 40px;
+  color: black;
+  padding-bottom: 10px;
 }
