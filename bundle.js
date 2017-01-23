@@ -21637,39 +21637,7 @@
 	        array.push(i);
 	      }
 	      array.push(0);
-	      // array = shuffleArray(array);
-	      // while (!this.isSolvable(array)) {
-	      //   array = shuffleArray(array);
-	      // }
 	      return array;
-	    }
-	
-	    // Where blank tile starts on odd row from bottom
-	    // A game is solvable if the number of inversions is even (& visa versa)
-	    // see: http://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
-	
-	  }, {
-	    key: 'isSolvable',
-	    value: function isSolvable(array) {
-	      var emptyIdx = array.indexOf(0);
-	      var blankIsOddRowFromBottom = false;
-	      if ([4, 5, 6, 7, 12, 13, 14, 15].includes(emptyIdx)) {
-	        blankIsOddRowFromBottom = true;
-	      }
-	
-	      var inversions = 0;
-	      for (var i = 0; i < array.length - 1; i += 1) {
-	        for (var j = i; j < array.length; j += 1) {
-	          if (array[i] > array[j]) {
-	            inversions += 1;
-	          }
-	        }
-	      }
-	      if (blankIsOddRowFromBottom && inversions % 2 === 0 || !blankIsOddRowFromBottom && inversions % 2 !== 0) {
-	        return true;
-	      } else {
-	        return false;
-	      }
 	    }
 	  }, {
 	    key: 'makeTiles',
@@ -21715,7 +21683,6 @@
 	  }, {
 	    key: 'moveTileUp',
 	    value: function moveTileUp() {
-	      console.log("up");
 	      var emptyTileIdx = this.findEmptyTile();
 	      var tiles = this.state.tiles;
 	      var movesFromSolved = this.state.movesFromSolved;
@@ -21730,7 +21697,6 @@
 	  }, {
 	    key: 'moveTileDown',
 	    value: function moveTileDown() {
-	      console.log("down");
 	      var emptyTileIdx = this.findEmptyTile();
 	      var tiles = this.state.tiles;
 	      var movesFromSolved = this.state.movesFromSolved;
@@ -21745,7 +21711,6 @@
 	  }, {
 	    key: 'moveTileLeft',
 	    value: function moveTileLeft() {
-	      console.log("left");
 	      var emptyTileIdx = this.findEmptyTile();
 	      var tiles = this.state.tiles;
 	      var movesFromSolved = this.state.movesFromSolved;
@@ -21760,7 +21725,6 @@
 	  }, {
 	    key: 'moveTileRight',
 	    value: function moveTileRight() {
-	      console.log("right");
 	      var emptyTileIdx = this.findEmptyTile();
 	      var tiles = this.state.tiles;
 	      var movesFromSolved = this.state.movesFromSolved;
@@ -21802,9 +21766,7 @@
 	
 	      var delay = 500;
 	      delay = this.make40Moves(delay);
-	      // while (!this.isSolvable(this.state.tiles)) {
-	      //   delay = this.make40Moves(delay);
-	      // }
+	
 	      setTimeout(function () {
 	        _this3.setState({ busy: false });
 	      }, delay);
