@@ -21955,7 +21955,7 @@
 /* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -21985,11 +21985,15 @@
 	  }
 	
 	  _createClass(Tile, [{
-	    key: "render",
+	    key: 'render',
 	    value: function render() {
+	
+	      var reds = [1, 3, 6, 8, 9, 11, 14];
+	      var color = reds.includes(this.props.number) ? 'blue' : 'red';
+	
 	      return _react2.default.createElement(
-	        "div",
-	        { className: "tile" },
+	        'div',
+	        { className: 'tile ' + color },
 	        this.props.number
 	      );
 	    }

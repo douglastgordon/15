@@ -7,8 +7,12 @@ export default class Tile extends React.Component {
   }
 
   render() {
+
+    const reds = [1, 3, 6, 8, 9, 11, 14];
+    let color = reds.includes(this.props.number) ? 'blue' : 'red';
+
     return (
-      <div className="tile">{this.props.number}</div>
+      <div className={`tile ${color}`}>{this.props.number}</div>
     );
   }
 }
