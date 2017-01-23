@@ -21945,10 +21945,19 @@
 	        ),
 	        _react2.default.createElement(
 	          _reactFlipMove2.default,
-	          { className: 'board', onKeyDown: this.handleKeyPress, easing: 'cubic-bezier(0, 0, 1, 1)', duration: '100' },
+	          {
+	            className: 'board',
+	            onKeyDown: this.handleKeyPress,
+	            easing: 'cubic-bezier(0, 0, 1, 1)',
+	            duration: '100' },
 	          tiles
 	        ),
-	        buttons
+	        buttons,
+	        _react2.default.createElement(
+	          'p',
+	          null,
+	          'move arrow keys to play'
+	        )
 	      );
 	    }
 	  }]);

@@ -301,10 +301,15 @@ export default class Game extends React.Component {
     return (
       <div>
         <h1>15 Puzzle</h1>
-          <FlipMove className="board" onKeyDown={this.handleKeyPress} easing="cubic-bezier(0, 0, 1, 1)" duration="100">
+          <FlipMove
+            className="board"
+            onKeyDown={this.handleKeyPress}
+            easing="cubic-bezier(0, 0, 1, 1)"
+            duration="100">
             {tiles}
           </FlipMove>
         {buttons}
+        <p>move arrow keys to play</p>
       </div>
     );
   }

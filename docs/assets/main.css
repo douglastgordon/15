@@ -2,6 +2,7 @@ body {
   text-align: center;
   padding: 10px;
   font-family: 'Lobster', cursive;
+  background-color: #FCFBE3;
 }
 
 h1 {
@@ -12,18 +13,17 @@ h1 {
 }
 
 .board {
-  width: 340px;
-  height: 340px;
+  width: 350px;
+  height: 350px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
   background-color: #FFCDD2;
-  border: solid 5px #D32F2F;
-  border-radius: 5px;
+  border: solid 10px #D32F2F;
+  border-radius: 10px;
   margin: 0 auto;
 }
-
 
 .tile {
   width: 80px;
@@ -32,7 +32,6 @@ h1 {
   line-height: 80px;
   text-align: center;
   border-radius: 5px;
-
 }
 
 .red {
@@ -43,10 +42,6 @@ h1 {
 .cream {
   color: #F44336;
   background-color: #FCFBE3;
-}
-
-.empty {
-  /*background-color: #FFCDD2;*/
 }
 
 .buttons {
