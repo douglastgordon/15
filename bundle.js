@@ -21631,13 +21631,12 @@
 	  }, {
 	    key: 'makeTiles',
 	    value: function makeTiles() {
-	      var gameArray = this.state.tiles;
-	      var tiles = [];
-	      gameArray.forEach(function (num) {
-	        if (num === 0) {
-	          tiles.push(_react2.default.createElement(_empty_tile2.default, { key: num }));
+	      var tiles = this.state.tiles;
+	      tiles = tiles.map(function (value) {
+	        if (value === 0) {
+	          return _react2.default.createElement(_empty_tile2.default, { key: value });
 	        } else {
-	          tiles.push(_react2.default.createElement(_tile2.default, { number: num, key: num }));
+	          return _react2.default.createElement(_tile2.default, { number: value, key: value });
 	        }
 	      });
 	      return tiles;

@@ -42,13 +42,12 @@ export default class Game extends React.Component {
   }
 
   makeTiles() {
-    const gameArray = this.state.tiles;
-    const tiles = [];
-    gameArray.forEach((num) => {
-      if (num === 0) {
-        tiles.push(<EmptyTile key={num} />);
+    let tiles = this.state.tiles;
+    tiles = tiles.map((value) => {
+      if (value === 0) {
+        return (<EmptyTile key={value} />);
       } else {
-        tiles.push(<Tile number={num} key={num} />);
+        return (<Tile number={value} key={value} />);
       }
     });
     return tiles;
