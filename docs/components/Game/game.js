@@ -66,19 +66,19 @@ export default class Game extends React.Component {
   handleKeyPress(event) {
     if (this.state.busy) { return; }
     switch (event.key) {
-      case 'ArrowUp':
+      case 'ArrowDown':
         this.moveTileUp();
         emptyTileIndex -= 4;
         break;
-      case 'ArrowDown':
+      case 'ArrowUp':
         this.moveTileDown();
         emptyTileIndex += 4;
         break;
-      case 'ArrowRight':
+      case 'ArrowLeft':
         this.moveTileRight();
         emptyTileIndex += 1;
         break;
-      case 'ArrowLeft':
+      case 'ArrowRight':
         this.moveTileLeft();
         emptyTileIndex -= 1;
         break;
