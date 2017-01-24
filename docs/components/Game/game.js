@@ -149,11 +149,8 @@ export default class Game extends React.Component {
   // Following methods control shuffling of board
 
   shuffle() {
-    if (this.state.busy) {
-      return;
-    } else {
-      this.setState({ busy: true });
-    }
+    if (this.state.busy) { return; }
+    this.setState({ busy: true });
 
     let delay = 500;
     delay = this.make40Moves(delay);
@@ -234,10 +231,10 @@ export default class Game extends React.Component {
     return nextMove;
   }
 
+  // following methods are for shuffling
+
   solve() {
-    if (this.gameWon()) {
-      return;
-    }
+    if (this.gameWon() || this.state.busy) { return; }
     this.setState({ busy: true });
     const reversedMovesFromSolved = this.state.movesFromSolved.reverse();
     const movesToMake = this.invertMoves(reversedMovesFromSolved);
@@ -245,26 +242,16 @@ export default class Game extends React.Component {
   }
 
   invertMoves(moves) {
-    const newMoves = [];
-    moves.forEach((move) => {
-      switch (move) {
-        case 'up':
-          newMoves.push('down');
-          break;
-        case 'down':
-          newMoves.push('up');
-          break;
-        case 'left':
-          newMoves.push('right');
-          break;
-        case 'right':
-          newMoves.push('left');
-          break;
-        default:
-          return;
-      }
+    const inversion = {
+      'up' : 'down',
+      'down' : 'up',
+      'right' : 'left',
+      'left' : 'right'
+    };
+    moves = moves.map((move) => {
+      return inversion[move];
     });
-    return newMoves;
+    return moves;
   }
 
   runAI(moves) {

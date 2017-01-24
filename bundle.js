@@ -21752,9 +21752,8 @@
 	
 	      if (this.state.busy) {
 	        return;
-	      } else {
-	        this.setState({ busy: true });
 	      }
+	      this.setState({ busy: true });
 	
 	      var delay = 500;
 	      delay = this.make40Moves(delay);
@@ -21847,10 +21846,13 @@
 	
 	      return nextMove;
 	    }
+	
+	    // following methods are for shuffling
+	
 	  }, {
 	    key: 'solve',
 	    value: function solve() {
-	      if (this.gameWon()) {
+	      if (this.gameWon() || this.state.busy) {
 	        return;
 	      }
 	      this.setState({ busy: true });
@@ -21861,26 +21863,16 @@
 	  }, {
 	    key: 'invertMoves',
 	    value: function invertMoves(moves) {
-	      var newMoves = [];
-	      moves.forEach(function (move) {
-	        switch (move) {
-	          case 'up':
-	            newMoves.push('down');
-	            break;
-	          case 'down':
-	            newMoves.push('up');
-	            break;
-	          case 'left':
-	            newMoves.push('right');
-	            break;
-	          case 'right':
-	            newMoves.push('left');
-	            break;
-	          default:
-	            return;
-	        }
+	      var inversion = {
+	        'up': 'down',
+	        'down': 'up',
+	        'right': 'left',
+	        'left': 'right'
+	      };
+	      moves = moves.map(function (move) {
+	        return inversion[move];
 	      });
-	      return newMoves;
+	      return moves;
 	    }
 	  }, {
 	    key: 'runAI',
