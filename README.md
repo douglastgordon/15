@@ -14,5 +14,7 @@ This implementation of the 15 puzzle consists of a Game component which stores a
 
 The Board is shuffled with semi-random moves. Only semi-random because I wanted to avoid the board shuffling back and forth between two states.
 
+The puzzle is always solvable because every possible state of the puzzle is derived from legal moves of the board.
+
 ###Solving
 To solve the 15 puzzle, I initially used an A* search on a priority queue which uses the Manhattan distance between the board states and the solved board state, storing the moves to get to that board state. This implementation works on any NxN board size. However, for well shuffled board states this implementation causes a stack overflow. So, in production I simply store the moves made to get from the solved board state to the shuffled board state and reverse these moves in order to get back to the solved board state. The original implementation can be seen in docs/Solver/solver.js.
