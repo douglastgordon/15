@@ -37,17 +37,8 @@ export default class Game extends React.Component {
 
   componentWillMount() {
     window.addEventListener("keydown", this.handleKeyPress);
-    const tiles = this.makeGameArray();
+    const tiles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0];
     this.setState({ tiles });
-  }
-
-  makeGameArray() {
-    let array = [];
-    for (let i = 1; i <= 15; i += 1) {
-      array.push(i);
-    }
-    array.push(0);
-    return array;
   }
 
   makeTiles() {

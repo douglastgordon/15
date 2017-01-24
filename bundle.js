@@ -21625,18 +21625,8 @@
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      window.addEventListener("keydown", this.handleKeyPress);
-	      var tiles = this.makeGameArray();
+	      var tiles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0];
 	      this.setState({ tiles: tiles });
-	    }
-	  }, {
-	    key: 'makeGameArray',
-	    value: function makeGameArray() {
-	      var array = [];
-	      for (var i = 1; i <= 15; i += 1) {
-	        array.push(i);
-	      }
-	      array.push(0);
-	      return array;
 	    }
 	  }, {
 	    key: 'makeTiles',
