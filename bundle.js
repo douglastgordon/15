@@ -21750,7 +21750,12 @@
 	    key: 'gameWon',
 	    value: function gameWon() {
 	      var solved = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0];
-	      return this.state.tiles === solved;
+	      for (var i = 0; i < solved.length; i += 1) {
+	        if (solved[i] !== this.state.tiles[i]) {
+	          return false;
+	        }
+	      }
+	      return true;
 	    }
 	  }, {
 	    key: 'shuffleBoard',
