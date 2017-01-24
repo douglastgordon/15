@@ -21776,19 +21776,20 @@
 	      var tiles = this.state.tiles;
 	      emptyTileIndex = tiles.indexOf(0);
 	
+	      var lastRand = void 0;
 	      for (var i = 0; i < 40; i += 1) {
-	        this.makeMove(delay);
+	        lastRand = this.makeMove(delay, lastRand);
 	        delay += 100;
 	      }
 	      return delay;
 	    }
 	  }, {
 	    key: 'makeMove',
-	    value: function makeMove(delay) {
+	    value: function makeMove(delay, lastRand) {
 	      var _this3 = this;
 	
 	      var rand = Math.floor(Math.random() * 4);
-	      rand = this.fixRand(rand);
+	      rand = this.fixRand(rand, lastRand);
 	
 	      switch (rand) {
 	        case 0:
@@ -21796,32 +21797,46 @@
 	            _this3.moveTileUp(emptyTileIndex);
 	          }, delay);
 	          emptyTileIndex -= 4;
-	          break;
+	          return 0;
+	        // break;
 	        case 1:
 	          setTimeout(function () {
 	            _this3.moveTileDown(emptyTileIndex);
 	          }, delay);
 	          emptyTileIndex += 4;
-	          break;
+	          return 1;
+	        // break;
 	        case 2:
 	          setTimeout(function () {
 	            _this3.moveTileLeft(emptyTileIndex);
 	          }, delay);
 	          emptyTileIndex -= 1;
-	          break;
+	          return 2;
+	        // break;
 	        case 3:
 	          setTimeout(function () {
 	            _this3.moveTileRight(emptyTileIndex);
 	          }, delay);
 	          emptyTileIndex += 1;
-	          break;
+	          return 3;
+	        // break;
 	        default:
 	          return;
 	      }
 	    }
 	  }, {
 	    key: 'fixRand',
-	    value: function fixRand(rand) {
+	    value: function fixRand(rand, lastRand) {
+	      if (rand === 0 && lastRand === 1) {
+	        rand = 2;
+	      } else if (rand === 1 && lastRand === 0) {
+	        rand = 3;
+	      } else if (rand === 2 && lastRand === 3) {
+	        rand = 0;
+	      } else if (rand === 3 && lastRand === 2) {
+	        rand = 1;
+	      }
+	
 	      if (rand === 0 && emptyTileIndex <= 3) {
 	        rand += 1;
 	      } else if (rand === 1 && emptyTileIndex > 11) {
@@ -21832,6 +21847,7 @@
 	      } else if (rand === 3 && [3, 7, 11, 15].includes(emptyTileIndex)) {
 	        rand -= 1;
 	      }
+	
 	      return rand;
 	    }
 	  }, {

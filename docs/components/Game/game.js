@@ -175,41 +175,56 @@ export default class Game extends React.Component {
     const tiles = this.state.tiles;
     emptyTileIndex = tiles.indexOf(0);
 
+    let lastRand;
     for (let i = 0; i < 40; i += 1) {
-      this.makeMove(delay);
+      lastRand = this.makeMove(delay, lastRand);
       delay += 100;
     }
     return delay;
   }
 
-  makeMove(delay) {
+  makeMove(delay, lastRand) {
 
     let rand = Math.floor((Math.random() * 4));
-    rand = this.fixRand(rand);
+    rand = this.fixRand(rand, lastRand);
 
     switch (rand) {
       case 0:
         setTimeout(() => { this.moveTileUp(emptyTileIndex); }, delay);
         emptyTileIndex -= 4;
-        break;
+        return 0;
+        // break;
       case 1:
         setTimeout(() => { this.moveTileDown(emptyTileIndex); }, delay);
         emptyTileIndex += 4;
-        break;
+        return 1;
+        // break;
       case 2:
         setTimeout(() => { this.moveTileLeft(emptyTileIndex); }, delay);
         emptyTileIndex -= 1;
-        break;
+        return 2;
+        // break;
       case 3:
         setTimeout(() => { this.moveTileRight(emptyTileIndex); }, delay);
         emptyTileIndex += 1;
-        break;
+        return 3;
+        // break;
       default:
         return;
     }
   }
 
-  fixRand(rand) {
+  fixRand(rand, lastRand) {
+    if (rand === 0 && lastRand === 1) {
+      rand = 2;
+    } else if (rand === 1 && lastRand === 0) {
+      rand = 3;
+    } else if (rand === 2 && lastRand === 3) {
+      rand = 0;
+    } else if (rand === 3 && lastRand === 2) {
+      rand = 1;
+    }
+
     if (rand === 0 && emptyTileIndex <= 3) {
       rand += 1;
     } else if (rand === 1 && emptyTileIndex > 11 ) {
@@ -220,6 +235,7 @@ export default class Game extends React.Component {
     } else if (rand === 3 && [3, 7, 11, 15].includes(emptyTileIndex)) {
       rand -= 1;
     }
+
     return rand;
   }
 
