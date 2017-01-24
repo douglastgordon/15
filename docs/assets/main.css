@@ -59,3 +59,14 @@ h1 {
   color: #F44336;
   cursor: pointer;
 }
+
+.winner {
+  font-size: 40px;
+  z-index: 1;
+  position: absolute;
+  /*margin: 0 auto;*/
+  left: 0;
+  right: 0;
+  top: 265px;
+  display: inline-block;
+}

@@ -135,7 +135,6 @@ export default class Game extends React.Component {
     }
   }
 
-
   checkWon() {
     if (this.gameWon()) {
       this.setState({ won: true }, () => {
@@ -315,7 +314,8 @@ export default class Game extends React.Component {
       );
     }
 
-    let won = this.state.won ? (<p>Solved!</p>) : '';
+    let won = this.state.won ? (<p className="winner">Solved!</p>) : '';
+    // let won = <p className="winner">Solved!</p>;
 
     return (
       <div>
