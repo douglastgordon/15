@@ -21611,7 +21611,7 @@
 	    _this.moveTileRight = _this.moveTileRight.bind(_this);
 	    _this.moveTileLeft = _this.moveTileLeft.bind(_this);
 	    _this.handleKeyPress = _this.handleKeyPress.bind(_this);
-	    _this.shuffleBoard = _this.shuffleBoard.bind(_this);
+	    _this.shuffle = _this.shuffle.bind(_this);
 	    _this.solve = _this.solve.bind(_this);
 	    _this.state = {
 	      tiles: [],
@@ -21650,19 +21650,15 @@
 	      switch (event.key) {
 	        case 'ArrowDown':
 	          this.moveTileUp();
-	          emptyTileIndex -= 4;
 	          break;
 	        case 'ArrowUp':
 	          this.moveTileDown();
-	          emptyTileIndex += 4;
 	          break;
 	        case 'ArrowLeft':
 	          this.moveTileRight();
-	          emptyTileIndex += 1;
 	          break;
 	        case 'ArrowRight':
 	          this.moveTileLeft();
-	          emptyTileIndex -= 1;
 	          break;
 	        default:
 	          return;
@@ -21746,9 +21742,12 @@
 	      }
 	      return true;
 	    }
+	
+	    // Following methods control shuffling of board
+	
 	  }, {
-	    key: 'shuffleBoard',
-	    value: function shuffleBoard() {
+	    key: 'shuffle',
+	    value: function shuffle() {
 	      var _this2 = this;
 	
 	      if (this.state.busy) {
@@ -21770,79 +21769,83 @@
 	      var tiles = this.state.tiles;
 	      emptyTileIndex = tiles.indexOf(0);
 	
-	      var lastRand = void 0;
+	      var previousMove = void 0;
 	      for (var i = 0; i < 40; i += 1) {
-	        lastRand = this.makeMove(delay, lastRand);
+	        previousMove = this.makeRandomMove(delay, previousMove);
 	        delay += 100;
 	      }
 	      return delay;
 	    }
 	  }, {
-	    key: 'makeMove',
-	    value: function makeMove(delay, lastRand) {
+	    key: 'makeRandomMove',
+	    value: function makeRandomMove(delay, previousMove) {
 	      var _this3 = this;
 	
-	      var rand = Math.floor(Math.random() * 4);
-	      rand = this.fixRand(rand, lastRand);
+	      var nextMove = Math.floor(Math.random() * 4);
+	      nextMove = this.fixMove(nextMove, previousMove);
 	
-	      switch (rand) {
+	      switch (nextMove) {
 	        case 0:
 	          setTimeout(function () {
 	            _this3.moveTileUp();
 	          }, delay);
 	          emptyTileIndex -= 4;
 	          return 0;
-	        // break;
 	        case 1:
 	          setTimeout(function () {
 	            _this3.moveTileDown();
 	          }, delay);
 	          emptyTileIndex += 4;
 	          return 1;
-	        // break;
 	        case 2:
 	          setTimeout(function () {
 	            _this3.moveTileLeft();
 	          }, delay);
 	          emptyTileIndex -= 1;
 	          return 2;
-	        // break;
 	        case 3:
 	          setTimeout(function () {
 	            _this3.moveTileRight();
 	          }, delay);
 	          emptyTileIndex += 1;
 	          return 3;
-	        // break;
 	        default:
 	          return;
 	      }
 	    }
+	
+	    // This method doesn't NEED to exist,
+	    // but makes for smoother shuffling animation
+	
 	  }, {
-	    key: 'fixRand',
-	    value: function fixRand(rand, lastRand) {
-	      if (rand === 0 && lastRand === 1) {
-	        rand = 2;
-	      } else if (rand === 1 && lastRand === 0) {
-	        rand = 3;
-	      } else if (rand === 2 && lastRand === 3) {
-	        rand = 0;
-	      } else if (rand === 3 && lastRand === 2) {
-	        rand = 1;
+	    key: 'fixMove',
+	    value: function fixMove(nextMove, previousMove) {
+	
+	      // ensures that next move doesn't simply revert the previous
+	      if (nextMove === 0 && previousMove === 1) {
+	        nextMove = 2;
+	      } else if (nextMove === 1 && previousMove === 0) {
+	        nextMove = 3;
+	      } else if (nextMove === 2 && previousMove === 3) {
+	        nextMove = 0;
+	      } else if (nextMove === 3 && previousMove === 2) {
+	        nextMove = 1;
 	      }
 	
-	      if (rand === 0 && emptyTileIndex <= 3) {
-	        rand += 1;
-	      } else if (rand === 1 && emptyTileIndex > 11) {
-	        rand -= 1;
+	      // ensures that the next move will be legal
+	      // (there are also safeguards against this in moveTile{Direction})
+	      if (nextMove === 0 && emptyTileIndex <= 3) {
+	        nextMove += 1;
+	      } else if (nextMove === 1 && emptyTileIndex > 11) {
+	        nextMove -= 1;
 	      }
-	      if (rand === 2 && emptyTileIndex % 4 === 0) {
-	        rand += 1;
-	      } else if (rand === 3 && [3, 7, 11, 15].includes(emptyTileIndex)) {
-	        rand -= 1;
+	      if (nextMove === 2 && emptyTileIndex % 4 === 0) {
+	        nextMove += 1;
+	      } else if (nextMove === 3 && [3, 7, 11, 15].includes(emptyTileIndex)) {
+	        nextMove -= 1;
 	      }
 	
-	      return rand;
+	      return nextMove;
 	    }
 	  }, {
 	    key: 'solve',
@@ -21934,7 +21937,7 @@
 	          { className: 'buttons' },
 	          _react2.default.createElement(
 	            'div',
-	            { onClick: this.shuffleBoard },
+	            { onClick: this.shuffle },
 	            'Shuffle'
 	          ),
 	          _react2.default.createElement(
