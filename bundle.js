@@ -21912,22 +21912,22 @@
 	      switch (move) {
 	        case 'up':
 	          setTimeout(function () {
-	            _this5.moveTileUp(emptyTileIndex);
+	            _this5.moveTileUp();
 	          }, delay);
 	          break;
 	        case 'down':
 	          setTimeout(function () {
-	            _this5.moveTileDown(emptyTileIndex);
+	            _this5.moveTileDown();
 	          }, delay);
 	          break;
 	        case 'left':
 	          setTimeout(function () {
-	            _this5.moveTileLeft(emptyTileIndex);
+	            _this5.moveTileLeft();
 	          }, delay);
 	          break;
 	        case 'right':
 	          setTimeout(function () {
-	            _this5.moveTileRight(emptyTileIndex);
+	            _this5.moveTileRight();
 	          }, delay);
 	          break;
 	        default:

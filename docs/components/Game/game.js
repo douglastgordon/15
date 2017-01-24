@@ -289,16 +289,16 @@ export default class Game extends React.Component {
   singleAImove(move, delay) {
     switch (move) {
       case 'up':
-        setTimeout(() => { this.moveTileUp(emptyTileIndex); }, delay);
+        setTimeout(() => { this.moveTileUp(); }, delay);
         break;
       case 'down':
-        setTimeout(() => { this.moveTileDown(emptyTileIndex); }, delay);
+        setTimeout(() => { this.moveTileDown(); }, delay);
         break;
       case 'left':
-        setTimeout(() => { this.moveTileLeft(emptyTileIndex); }, delay);
+        setTimeout(() => { this.moveTileLeft(); }, delay);
         break;
       case 'right':
-        setTimeout(() => { this.moveTileRight(emptyTileIndex); }, delay);
+        setTimeout(() => { this.moveTileRight(); }, delay);
         break;
       default:
         return;
