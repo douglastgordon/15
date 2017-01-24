@@ -21799,28 +21799,28 @@
 	      switch (rand) {
 	        case 0:
 	          setTimeout(function () {
-	            _this3.moveTileUp(emptyTileIndex);
+	            _this3.moveTileUp();
 	          }, delay);
 	          emptyTileIndex -= 4;
 	          return 0;
 	        // break;
 	        case 1:
 	          setTimeout(function () {
-	            _this3.moveTileDown(emptyTileIndex);
+	            _this3.moveTileDown();
 	          }, delay);
 	          emptyTileIndex += 4;
 	          return 1;
 	        // break;
 	        case 2:
 	          setTimeout(function () {
-	            _this3.moveTileLeft(emptyTileIndex);
+	            _this3.moveTileLeft();
 	          }, delay);
 	          emptyTileIndex -= 1;
 	          return 2;
 	        // break;
 	        case 3:
 	          setTimeout(function () {
-	            _this3.moveTileRight(emptyTileIndex);
+	            _this3.moveTileRight();
 	          }, delay);
 	          emptyTileIndex += 1;
 	          return 3;

@@ -193,22 +193,22 @@ export default class Game extends React.Component {
 
     switch (rand) {
       case 0:
-        setTimeout(() => { this.moveTileUp(emptyTileIndex); }, delay);
+        setTimeout(() => { this.moveTileUp(); }, delay);
         emptyTileIndex -= 4;
         return 0;
         // break;
       case 1:
-        setTimeout(() => { this.moveTileDown(emptyTileIndex); }, delay);
+        setTimeout(() => { this.moveTileDown(); }, delay);
         emptyTileIndex += 4;
         return 1;
         // break;
       case 2:
-        setTimeout(() => { this.moveTileLeft(emptyTileIndex); }, delay);
+        setTimeout(() => { this.moveTileLeft(); }, delay);
         emptyTileIndex -= 1;
         return 2;
         // break;
       case 3:
-        setTimeout(() => { this.moveTileRight(emptyTileIndex); }, delay);
+        setTimeout(() => { this.moveTileRight(); }, delay);
         emptyTileIndex += 1;
         return 3;
         // break;
