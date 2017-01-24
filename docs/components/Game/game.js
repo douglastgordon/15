@@ -315,7 +315,6 @@ export default class Game extends React.Component {
     }
 
     let won = this.state.won ? (<p className="winner">Solved!</p>) : '';
-    // let won = <p className="winner">Solved!</p>;
 
     return (
       <div>

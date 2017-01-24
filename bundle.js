@@ -21976,7 +21976,6 @@
 	        { className: 'winner' },
 	        'Solved!'
 	      ) : '';
-	      // let won = <p className="winner">Solved!</p>;
 	
 	      return _react2.default.createElement(
 	        'div',
