@@ -32,6 +32,7 @@ export default class Game extends React.Component {
       tiles: [],
       busy: false,
       movesFromSolved: [],
+      won: false
     };
   }
 
@@ -82,7 +83,9 @@ export default class Game extends React.Component {
       tiles[emptyTileIdx] = tiles[emptyTileIdx - 4];
       tiles[emptyTileIdx - 4] = 0;
       movesFromSolved.push("up");
-      this.setState({ tiles, movesFromSolved });
+      this.setState({ tiles, movesFromSolved }, () => {
+        this.checkWon();
+      });
     }
   }
 
@@ -95,7 +98,9 @@ export default class Game extends React.Component {
       tiles[emptyTileIdx] = tiles[emptyTileIdx + 4];
       tiles[emptyTileIdx + 4] = 0;
       movesFromSolved.push("down");
-      this.setState({ tiles, movesFromSolved });
+      this.setState({ tiles, movesFromSolved }, () => {
+        this.checkWon();
+      });
     }
   }
 
@@ -108,7 +113,9 @@ export default class Game extends React.Component {
       tiles[emptyTileIdx] = tiles[emptyTileIdx - 1];
       tiles[emptyTileIdx - 1] = 0;
       movesFromSolved.push("left");
-      this.setState({ tiles, movesFromSolved });
+      this.setState({ tiles, movesFromSolved }, () => {
+        this.checkWon();
+      });
     }
   }
 
@@ -122,7 +129,19 @@ export default class Game extends React.Component {
       tiles[emptyTileIdx + 1] = 0;
       movesFromSolved.push("right");
 
-      this.setState({ tiles, movesFromSolved });
+      this.setState({ tiles, movesFromSolved }, () => {
+        this.checkWon();
+      });
+    }
+  }
+
+
+  checkWon() {
+    if (this.gameWon()) {
+      this.setState({ won: true }, () => {
+        console.log("hello");
+        setTimeout(() => this.setState({ won: false}), 2000);
+      });
     }
   }
 
@@ -296,9 +315,12 @@ export default class Game extends React.Component {
       );
     }
 
+    let won = this.state.won ? (<p>Solved!</p>) : '';
+
     return (
       <div>
         <h1>15 Puzzle</h1>
+        {won}
           <FlipMove
             className="board"
             onKeyDown={this.handleKeyPress}
